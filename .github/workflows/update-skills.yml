@@ -1,0 +1,41 @@
+name: Update Skills
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-skills:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main-tests
+        uses: actions/checkout@v4
+        with:
+          ref: main-tests
+
+      - name: Delete every directory that doesn't start with a dot
+        run: |
+          find . -mindepth 1 -maxdepth 1 -type d ! -name '.*' -exec rm -rf {} +
+
+      - name: Download dac_skills.zip
+        run: curl -O https://dl.google.com/dac/dac_skills.zip
+
+      - name: Extract zip file
+        run: |
+          unzip dac_skills.zip
+          rm dac_skills.zip
+
+      - name: Copy contents of github-only branch
+        run: |
+          git fetch origin github-only
+          git checkout origin/github-only -- .
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Updates skills ($(date +'%Y-%m-%d %H:%M'))" || echo "No changes to commit"
+          git push origin HEAD:main-tests
