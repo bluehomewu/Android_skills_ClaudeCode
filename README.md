@@ -1,56 +1,64 @@
-## Android skills
+## Android Skills for Claude Code
 
-Android skills are a dedicated repository of AI-optimised, modular instructions and resources, to
-help LLMs better understand and execute specific patterns that follow the best practices and
-guidance on Android development from [developer.android.com](https://developer.android.com).
+This is a fork of [android/skills](https://github.com/android/skills) converted to **Claude Code** custom slash commands.
 
-Android skills follow the [open-standard agent skills](https://agentskills.io/home) - markdown
-files (SKILL.md) that provide a technical specification of a task, and ground LLMs with information
-on specialized domains and workflows.
+The original skills target the Android CLI (Gemini / Antigravity agent). This repo re-writes each skill as a Claude Code command — same technical content, adapted to Claude's tool-use model (`Read`, `Edit`, `Glob`, `Grep`, etc.).
 
-To learn more, read the official documentation:
+---
 
-- [Android skills](https://developer.android.com/tools/agents/android-skills)
-- [Android CLI](https://developer.android.com/tools/agents/android-cli)
-- [Android Studio](https://developer.android.com/studio/gemini/skills)
+## Available Skills (Claude Code Commands)
 
-### Install Android skills
+| Command | Description |
+|---|---|
+| `/android-agp-9-upgrade` | Migrate an Android project to AGP 9 |
+| `/android-compose-xml-migration` | Incrementally migrate one XML layout to Jetpack Compose |
+| `/android-navigation-3` | Set up or migrate to Jetpack Navigation 3 |
+| `/android-r8-analyzer` | Audit R8/ProGuard keep rules and recommend size optimisations |
+| `/android-play-billing-upgrade` | Upgrade Google Play Billing Library to the latest version |
+| `/android-edge-to-edge` | Add adaptive edge-to-edge and IME inset support to Compose screens |
 
-Use Android CLI to install Android skills to directories for all detected agents:
+---
+
+## Installation
+
+Copy the `.claude/commands/` folder into your Android project root (or your global `~/.claude/commands/`):
+
+```bash
+# Project-level (recommended)
+cp -r .claude/commands/ /path/to/your/android/project/.claude/commands/
+
+# Global (available in all projects)
+cp -r .claude/commands/ ~/.claude/commands/
+```
+
+Then in any Claude Code session within that project, invoke a skill with:
 
 ```
-android skills add [--all] [--agent=<agent-name>] [--skill=<skill-name>]
+/android-agp-9-upgrade
+/android-edge-to-edge
+/android-r8-analyzer
 ```
 
-If you don't have any existing agent directories and don't specify particular agents, the skills
-will be installed for Gemini and Antigravity at `~/.gemini/antigravity/skills`.
+Some commands accept an optional argument:
 
-**Options:**
+```
+/android-compose-xml-migration app/src/main/res/layout/fragment_home.xml
+/android-navigation-3 bottom-nav
+/android-play-billing-upgrade 7.0.0
+```
 
-- `--all` - Add all Android skills. If omitted (and `--skill` isn't specified), only the
-  `android-cli` skill will be installed.
-- `--agent` - A comma-separated list of agents to install the skill for. If omitted, the skill will
-  be installed for all detected agents.
-- `--skill` - Specific skill that you want to install. If omitted (and `--all` isn't specified),
-  only the `android-cli` skill will be installed.
+---
+
+## Source
+
+Original skills: [android/skills](https://github.com/android/skills) — Apache License 2.0
+
+Claude Code conversion maintained in this fork. The original `SKILL.md` files for each topic remain in their original directories for reference.
 
 ## Disclaimer
 
-AI can make mistakes, so always double-check the results.
-
-## Contributing
-
-Submit a GitHub issue to provide feedback, report issues, or make new skill requests and changes.
-
-Public contributions are not accepted at this time.
+AI can make mistakes. Always review and test changes before committing to production.
 
 ## License
 
-Android Skills is licensed under the [Apache License 2.0](LICENSE.txt). See the `LICENSE.txt` file
-for
-details.
-
-## Review our community guidelines
-
-This project follows
-[Google's Open Source Community Guidelines](https://opensource.google/conduct/).
+Android Skills is licensed under the [Apache License 2.0](LICENSE.txt).
